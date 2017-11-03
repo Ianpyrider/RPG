@@ -4,7 +4,7 @@ public class Monster {
 	private int health;
 	private int damage;
 	
-	public Monster (int mhealth, int mdamage, int index) {
+	public Monster (int mhealth, int mdamage) {
 		health = mhealth;
 		damage = mdamage;
 	}

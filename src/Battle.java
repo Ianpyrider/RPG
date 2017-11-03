@@ -1,7 +1,7 @@
 public class Battle {
 	
 	static PartyMember player1 = new PartyMember(10, 6);
-	static Monster orc = new Monster(7, 6, 1);
+	static Monster orc = new Monster(7, 6);
 	
 	public static void newBattle() {
 		
