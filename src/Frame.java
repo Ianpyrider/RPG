@@ -42,35 +42,8 @@ public class Frame implements ActionListener  {
 	{
 		if(evt.getSource() == attack)
 		{
-<<<<<<< HEAD
+
 			Battle.newBattle();
-=======
-			int playerDamage = player1.attack();
-			
-			text.setText("\nPlayer attacks!");
-			text.setText(playerDamage + " damage done.");
-			
-			if (playerDamage >= orc.getHealth()) {
-				text.setText("The orc is dead!");
-				orc.damaged(playerDamage);
-			} else {
-				orc.damaged(playerDamage);
-				text.setText("Orc has " + orc.getHealth() + " health remaining.");
-				text.setText("The orc attacks!");
-				
-				int orcDamage = orc.attack();
-				
-				text.setText(orcDamage + " damage done.");
-				
-				if (playerDamage >= player1.getHealth()) {
-					text.setText("The player is dead!");
-					player1.damaged(orcDamage);
-				} else {
-					player1.damaged(orcDamage);
-					text.setText("Player has " + player1.getHealth() + " health remaining.");
-				}
-			}
->>>>>>> 992244c210c6bb673fa4587bab933ef255e9f86f
 		}
 	}
 }

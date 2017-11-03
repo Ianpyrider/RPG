@@ -4,10 +4,10 @@ public class PartyMember {
 	private int damage;
 	private Weapon weapon;
 	
-	public PartyMember (int phealth, int pdamage) {
+	public PartyMember (int phealth, int pdamage, int weaponid) {
 		health = phealth;
 		damage = pdamage;
-		weapon = new Weapon(0,0,0);
+		weapon = new Weapon(weaponid);
 	}
 	
 	public int attack() {

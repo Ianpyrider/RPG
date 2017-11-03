@@ -1,9 +1,10 @@
 public class Battle {
 	
-	static PartyMember player1 = new PartyMember(10, 6);
-	static Monster orc = new Monster(7, 6);
+	static PartyMember player1 = new PartyMember(7, 1, 0);
+	static Monster orc = new Monster(7, 1, 0);
 	
 	public static void newBattle() {
+
 		
 		int playerDamage = player1.attack();
 		
@@ -22,7 +23,7 @@ public class Battle {
 			
 			System.out.println(orcDamage + " damage done.");
 			
-			if (playerDamage >= player1.getHealth()) {
+			if (orcDamage >= player1.getHealth()) {
 				System.out.println("The player is dead!");
 				player1.damaged(orcDamage);
 			} else {
