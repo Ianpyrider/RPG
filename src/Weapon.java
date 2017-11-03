@@ -2,18 +2,28 @@
 public class Weapon {
 	private int strength;
 	private int id;
+	private int level = 1;
 	
 	public Weapon(int weaponid) {
-		strength = 0;
 		id = weaponid;
 		if (id == 0) {
+			//Fists
+			strength = 0;
+		} else if (id == 1) {
 			//Short sword
 			strength = 6;
+		} else if (id == 2) {
+			//Asgoroth's sword
+			strength = 100;
 		}
 	}
 	
 	public int getStrength()
 	{
 		return strength;
+	}
+	
+	public int getId() {
+		return id;
 	}
 }

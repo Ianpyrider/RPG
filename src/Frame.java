@@ -10,6 +10,7 @@ public class Frame implements ActionListener  {
 	private JButton attack;
 	private JButton monsterSelect;
 	private JTextField text;
+	private int battleIndex = 0;
 	
 	public Frame()
 	{
@@ -43,8 +44,13 @@ public class Frame implements ActionListener  {
 		if(evt.getSource() == attack)
 		{	
 			if (Battle.newBattle()) {
-				Battle.resetBattle();
-				System.out.println("\nBattle Reset\n");
+				if (!(Battle.playerDead())) {
+					battleIndex++;
+					Battle.resetBattle(battleIndex);
+				} else {
+					text.setText("Game over!");
+					attack.setVisible(false);
+				}
 			}
 		}
 	}

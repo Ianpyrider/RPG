@@ -2,6 +2,7 @@ public class PartyMember {
 	private int health;
 	private int damage;
 	private Weapon weapon;
+	private int level = 1;
 	
 	public PartyMember (int phealth, int pdamage, int weaponid) {
 		health = phealth;
@@ -20,5 +21,18 @@ public class PartyMember {
 	
 	public int getHealth() {
 		return health;
+	}
+	
+	public int getWeapon() {
+		return weapon.getId();
+	}
+	
+	public int getLevel() {
+		return level;
+	}
+	
+	public void levelUp() {
+		level++;
+		System.out.println("\nLevel up!\n");
 	}
 }
