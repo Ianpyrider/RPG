@@ -3,14 +3,16 @@ public class Monster {
 
 	private int health;
 	private int damage;
+	private Weapon weapon;
 	
 	public Monster (int mhealth, int mdamage) {
 		health = mhealth;
 		damage = mdamage;
+		weapon = new Weapon(0,0,0);
 	}
 	
 	public int attack() {
-		return (int)(Math.random()*damage+1);
+		return (int)(damage + weapon.getStrength());
 	}
 	
 	public int damaged(int damaged) {
