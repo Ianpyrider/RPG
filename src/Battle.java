@@ -12,7 +12,7 @@ public class Battle {
 		System.out.println("A new challenger approaches...");
 		player1 = new PartyMember(player1.getHealth(),player1.getLevel(),player1.getWeapon());
 		if (battleIndex == 1) {
-			goblin = new Monster(5, 1, 1, "Jimmy the goblin");
+			goblin = new Monster(5, 1, 3, "Jimmy the goblin");
 			currentMonster = goblin;
 			System.out.println("\n" + currentMonster.getName() + " appears!");
 		} else if (battleIndex == 2) {

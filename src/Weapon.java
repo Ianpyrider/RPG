@@ -15,6 +15,9 @@ public class Weapon {
 		} else if (id == 2) {
 			//Asgoroth's sword
 			strength = 100;
+		} else if (id==3) {
+			//Battle Hammer
+			strength = 8
 		}
 	}
 	
