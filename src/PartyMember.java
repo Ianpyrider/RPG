@@ -1,5 +1,5 @@
 public class PartyMember {
-	
+	//gittest
 	private int health;
 	private int damage;
 	private Weapon weapon;
