@@ -41,9 +41,11 @@ public class Frame implements ActionListener  {
 	public void actionPerformed(ActionEvent evt)
 	{
 		if(evt.getSource() == attack)
-		{
-
-			Battle.newBattle();
+		{	
+			if (Battle.newBattle()) {
+				Battle.resetBattle();
+				System.out.println("\nBattle Reset\n");
+			}
 		}
 	}
 }
