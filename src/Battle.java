@@ -1,14 +1,14 @@
 public class Battle {
 
-	static PartyMember player1 = new PartyMember(10, 1, 1);
-	static Monster orc = new Monster(7, 1, 0, "Kalel the orc");
-	static Monster goblin;
-	static Monster minotaur;
-	static Monster asgoroth;
-	static Monster currentMonster = orc;
-	static boolean dead = false;
+	 PartyMember player1 = new PartyMember(10, 1, 1, 10);
+	 Monster orc = new Monster(7, 1, 0, "Kalel the orc");
+	 Monster goblin;
+	 Monster minotaur;
+	 Monster asgoroth;
+	 Monster currentMonster = orc;
+	 boolean dead = false;
 
-	public static void resetBattle(int battleIndex) {
+	public  void resetBattle(int battleIndex) {
 		if (battleIndex == 0) {
 			System.out.println(currentMonster.getName() + " appears!");
 		} else if (battleIndex == 1) {
@@ -27,11 +27,11 @@ public class Battle {
 			currentMonster = asgoroth;
 			System.out.println("\n" + currentMonster.getName() + " appears!");
 		} else {
-			Frame.win();
+			//win();
 		}
 	}
 
-	public static boolean newBattle(boolean isItem) {
+	public boolean newBattle(boolean isItem) {
 		if (!isItem) {
 			int playerDamage = player1.attack();
 
@@ -69,27 +69,38 @@ public class Battle {
 
 		} else {
 			if (player1.getHPotions() > 0) {
-				player1.heal();
 				
-				System.out.println("\nHealed!\n");
-				
-				System.out.println(currentMonster.getName() + " attacks!");
-				
-				int monsterDamage = currentMonster.attack();
-
-				System.out.println(monsterDamage + " damage done.");
-
-				if (monsterDamage >= player1.getHealth()) {
-					System.out.println("The player is dead!");
-					player1.damaged(monsterDamage);
-					dead = true;
-					return true;
+				if (player1.getHealth() == player1.getMaxHP()) {
+					System.out.println("You already have full health!");
+					return false;
 				} else {
-					player1.damaged(monsterDamage);
-					System.out.println("Player has " + player1.getHealth() + " health remaining.");
+					player1.heal(false);
+					
+					if (player1.getHealth() > player1.getMaxHP()) {
+						System.out.println("Player healed to max health!");
+						player1.setHealth(player1.getMaxHP());
+					} else {
+						System.out.println("\nHealed!\n");
+					}
+					
+					System.out.println(currentMonster.getName() + " attacks!");
+					
+					int monsterDamage = currentMonster.attack();
+
+					System.out.println(monsterDamage + " damage done.");
+
+					if (monsterDamage >= player1.getHealth()) {
+						System.out.println("The player is dead!");
+						player1.damaged(monsterDamage);
+						dead = true;
+						return true;
+					} else {
+						player1.damaged(monsterDamage);
+						System.out.println("Player has " + player1.getHealth() + " health remaining.");
+					}
+					
+					return false;
 				}
-				
-				return false;
 			} else {
 				System.out.println("Not enough health potions!");
 				return false;
@@ -97,7 +108,7 @@ public class Battle {
 		}
 	}
 
-	public static boolean playerDead() {
+	public  boolean playerDead() {
 		return dead;
 	}
 
