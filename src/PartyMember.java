@@ -4,6 +4,10 @@ public class PartyMember {
 	private Weapon weapon;
 	private int level = 1;
 	
+	//Slot one is health potions and slot 2 is mana potions
+	private int[] items = new int[] {3, 1};
+	
+	
 	public PartyMember (int phealth, int pdamage, int weaponid) {
 		health = phealth;
 		damage = pdamage;
@@ -34,5 +38,14 @@ public class PartyMember {
 	public void levelUp() {
 		level++;
 		System.out.println("\nLevel up!\n");
+	}
+	
+	public void heal() {
+		health += 5;
+		items[0]--;
+	}
+	
+	public int getHPotions() {
+		return items[0];
 	}
 }

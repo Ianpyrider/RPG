@@ -17,7 +17,7 @@ public class Weapon {
 			strength = 100;
 		} else if (id==3) {
 			//Battle Hammer
-			strength = 8
+			strength = 8;
 		}
 	}
 	
