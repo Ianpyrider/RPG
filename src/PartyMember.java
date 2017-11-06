@@ -47,7 +47,7 @@ public class PartyMember {
 	public void heal(boolean isMagic) {
 		health += 5;
 		if (isMagic) {
-			
+			mana -= 5;
 		} else {
 			items[0]--;
 		}
@@ -63,5 +63,9 @@ public class PartyMember {
 	
 	public void setHealth(int newhealth) {
 		health = newhealth;
+	}
+	
+	public int getMana() {
+		return mana;
 	}
 }

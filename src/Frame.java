@@ -13,7 +13,7 @@ public class Frame implements ActionListener  {
 	private JFrame frame;
 	private  JButton attack;
 	private  JButton item;
-	private  JButton b2;
+	private  JButton magic;
 	private  JButton b4;
 	private AnimationPanel screen;
 	private JPanel controls;
@@ -23,16 +23,18 @@ public class Frame implements ActionListener  {
 	private int battleIndex = 0;
 	private Battle battle;
 	
+	
 	public Frame()
 	{
+		battle = new Battle();
 		frame = new JFrame("One Buttons");
 		attack = new JButton("Attack");
 		item = new JButton("Items");
-		b2 = new JButton("Magic");
+		magic = new JButton("Magic");
 		b4 = new JButton("Give up");
 		controls = new JPanel();
 		screen = new AnimationPanel();
-		healthp = new JButton("HP Potion");
+		healthp = new JButton("HP Potion (" + battle.playerHPotions() + ")");
 		monsterSelect = new JButton("Monster 1");
 		text = new JTextField(" Choose an action");
 
@@ -48,9 +50,9 @@ public class Frame implements ActionListener  {
 		//item.setBounds(424,700,278,150);//set x,y,width,height of button
 		item.setFont(new Font("Ariel", 50, 50));
 		
-		b2.addActionListener(this);//assign thef action to this button
+		magic.addActionListener(this);//assign thef action to this button
 		//b2.setBounds(748,700,278,150);//set x,y,width,height of button
-		b2.setFont(new Font("Ariel", 50, 50));
+		magic.setFont(new Font("Ariel", 50, 50));
 		
 		b4.addActionListener(this);//assign thef action to this button
 		//b4.setBounds(1072,700,278,150);//set x,y,width,height of button
@@ -70,14 +72,13 @@ public class Frame implements ActionListener  {
 		controls.add(attack);//add b1 to the frame
 		controls.add(text);
 		controls.add(item);
-		controls.add(b2);
+		controls.add(magic);
 		controls.add(b4);
 		controls.add(healthp);
 		frame.add(controls);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//end program when window closes
 		frame.setVisible(true);//make the frame visible
 		healthp.setVisible(false);
-		battle = new Battle();
 	}
 	
 	public void win() {
@@ -89,7 +90,7 @@ public class Frame implements ActionListener  {
 	{
 		if(evt.getSource() == attack)
 		{	
-			if (battle.newBattle(false)) {
+			if (battle.newBattle(0)) {
 				if (!(battle.playerDead())) {
 					battleIndex++;
 					battle.resetBattle(battleIndex);
@@ -97,7 +98,7 @@ public class Frame implements ActionListener  {
 					text.setText("      Game over!");
 					attack.setVisible(false);
 					item.setVisible(false);
-					b2.setVisible(false);
+					magic.setVisible(false);
 					b4.setVisible(false);
 				}
 			}
@@ -105,13 +106,13 @@ public class Frame implements ActionListener  {
 		if(evt.getSource() == item) {
 			attack.setVisible(false);
 			item.setVisible(false);
-			b2.setVisible(false);
+			magic.setVisible(false);
 			b4.setVisible(false);
 			healthp.setVisible(true);
 			text.setText("Choose an item");
 		}
 		if (evt.getSource() == healthp) {
-			if (battle.newBattle(true)) {
+			if (battle.newBattle(1)) {
 				if (!(battle.playerDead())) {
 					battleIndex++;
 					battle.resetBattle(battleIndex);
@@ -119,16 +120,31 @@ public class Frame implements ActionListener  {
 					text.setText("      Game over!");
 					attack.setVisible(false);
 					item.setVisible(false);
-					b2.setVisible(false);
+					magic.setVisible(false);
 					b4.setVisible(false);
 				}
 			}
 			text.setText("Choose an action");
 			attack.setVisible(true);
 			item.setVisible(true);
-			b2.setVisible(true);
+			magic.setVisible(true);
 			b4.setVisible(true);
+			healthp.setText("HP Potion (" + battle.playerHPotions() + ")");
 			healthp.setVisible(false);
+		}
+		if (evt.getSource() == magic) {
+			if (battle.newBattle(2)) {
+				if (!(battle.playerDead())) {
+					battleIndex++;
+					battle.resetBattle(battleIndex);
+				} else {
+					text.setText("      Game over!");
+					attack.setVisible(false);
+					item.setVisible(false);
+					magic.setVisible(false);
+					b4.setVisible(false);
+				}
+			}
 		}
 	}
 }
