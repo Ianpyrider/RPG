@@ -68,4 +68,8 @@ public class PartyMember {
 	public int getMana() {
 		return mana;
 	}
+	
+	public int getMPotions() {
+		return items[1];
+	}
 }

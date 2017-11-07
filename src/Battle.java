@@ -110,10 +110,15 @@ public class Battle {
 				if (player1.getHealth() == player1.getMaxHP()) {
 					System.out.println("You already have full health!");
 					return false;
-				} else {
+				} else  {
 					player1.heal(true);
 					
 					System.out.println("\nPlayer casts heal!\n");
+					
+					if (player1.getHealth() > player1.getMaxHP()) {
+						System.out.println("Player healed to max health!");
+						player1.setHealth(player1.getMaxHP());
+					}
 
 					System.out.println(currentMonster.getName() + " attacks!");
 
@@ -143,6 +148,10 @@ public class Battle {
 	
 	public int playerHPotions() {
 		return player1.getHPotions();
+	}
+	
+	public int playerMPotions() {
+		return player1.getMPotions();
 	}
 
 	public  boolean playerDead() {
