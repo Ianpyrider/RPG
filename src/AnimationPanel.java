@@ -31,7 +31,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 			e.printStackTrace();
 		}
 
-		t = new Timer(20,this);
+		t = new Timer(130,this);
 		t.start();
 	}
 
@@ -40,7 +40,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 	{
 		g.clearRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.RED);
-
+		
 		try {
 			img = ImageIO.read(new File("frame_0" + frameNum + "_delay-0.13s.gif"));
 		} catch (IOException e) {
@@ -53,7 +53,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 	//Modify this method as needed.
 	public void actionPerformed(ActionEvent e)
 	{
-		frameNum++;
+		frameNum++;		
 		if (frameNum>9) {
 			frameNum = 0;
 		}
