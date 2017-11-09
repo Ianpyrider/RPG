@@ -1,12 +1,14 @@
 public class Battle {
 
-	PartyMember player1 = new PartyMember(10, 1, 1, 10);
+	PartyMember player1 = new PartyMember(20, 1, 1, 10);
 	Monster orc = new Monster(7, 1, 0, "Kalel the orc");
 	Monster goblin;
 	Monster minotaur;
 	Monster asgoroth;
 	Monster currentMonster = orc;
 	boolean dead = false;
+	boolean playerAttack = false;
+	boolean win = false;
 
 	public  void resetBattle(int battleIndex) {
 		if (battleIndex == 0) {
@@ -32,6 +34,7 @@ public class Battle {
 	}
 
 	public boolean newBattle(int actionIndex) {
+		
 		if (actionIndex == 0) {
 			int playerDamage = player1.attack();
 
@@ -142,6 +145,17 @@ public class Battle {
 				System.out.println("Not enough mana!");
 				return false;
 			}
+		} else if (actionIndex == 3) {
+			if (currentMonster == asgoroth) {
+				System.out.println("A storm rumbles overhead... ASGOROTH IS SMITED DOWN");
+				System.out.println("You win!");
+				win = true;
+				return true;
+			} else {
+				System.out.println("A storm rumbles overhead... YOU ARE SMITED DOWN");
+				dead = true;
+				return true;
+			}
 		}
 		return false;
 	}
@@ -157,5 +171,12 @@ public class Battle {
 	public  boolean playerDead() {
 		return dead;
 	}
-
+	
+	public boolean playerAttack() {
+		return playerAttack;
+	}
+	
+	public boolean win() {
+		return win;
+	}
 }

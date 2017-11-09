@@ -10,7 +10,9 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 
 public class AnimationPanel extends JPanel implements ActionListener
@@ -18,20 +20,38 @@ public class AnimationPanel extends JPanel implements ActionListener
 	private Timer t;
 	//change/add instance variables as needed
 	int frameNum;
-	BufferedImage img;
+	BufferedImage warrior;
+	BufferedImage orc;
+	boolean attack = false;
+	int warX = 175;
+	int warY = 140;
+	JTextField text;
+	boolean gameOver = false;
+	JButton attackB;
+	JButton itemB;
+	JButton magicB;
+	JButton runB;
+	
 
 	public AnimationPanel()
 	{
 		frameNum = 0;
-		
+
 		try {
-			img = ImageIO.read(new File("frame_0" + frameNum + "_delay-0.13s.gif"));
+			warrior = ImageIO.read(new File("frame_0" + frameNum + "_delay-0.13s.gif"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		t = new Timer(130,this);
+		try {
+			orc = ImageIO.read(new File("orc.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		t = new Timer(50,this);
 		t.start();
 	}
 
@@ -40,23 +60,80 @@ public class AnimationPanel extends JPanel implements ActionListener
 	{
 		g.clearRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.RED);
-		
+
 		try {
-			img = ImageIO.read(new File("frame_0" + frameNum + "_delay-0.13s.gif"));
+			if (frameNum < 10) {
+				warrior = ImageIO.read(new File("frame_0" + frameNum + "_delay-0.13s.gif"));
+			} else {
+				warrior = ImageIO.read(new File("frame_" + frameNum + "_delay-0.13s.gif"));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		g.drawImage(img,100,140,this); //img link, upper left corner coor, this
+
+		g.drawImage(warrior,warX,warY,this); //img link, upper left corner coor, this
+		g.drawImage(orc, 525, 140, this);
 	}
 
 	//Modify this method as needed.
 	public void actionPerformed(ActionEvent e)
 	{
-		frameNum++;		
-		if (frameNum>9) {
-			frameNum = 0;
+		if (!gameOver) {
+			if (attack) {
+				frameNum++;	
+				if (frameNum < 9) {
+					frameNum++;
+				} else {
+					if (frameNum<14) {
+						warX += 90;
+					}
+					if (frameNum>16) {
+						frameNum = 0;
+						attack = false;
+						if (!gameOver) {
+							text.setText("       Choose an action");
+							attackB.setVisible(true);
+							itemB.setVisible(true);
+							magicB.setVisible(true);
+							runB.setVisible(true);
+						}
+					} 
+				}
+				repaint();
+			} else if (warX>175) {
+				warX-=90;
+				frameNum++;		
+				if (frameNum>9) {
+					frameNum = 0;
+				} 
+				repaint();
+			} else {
+				frameNum++;		
+				if (frameNum>9) {
+					frameNum = 0;
+				} 
+				repaint();
+			}
+		} else {
+			t.stop();
 		}
-		repaint();
+	}
+
+	public void attack(JTextField intext, JButton b1, JButton b2, JButton b3, JButton b4) {
+		attack = true;
+		text = intext;
+		text.setText("       Player attacks!");
+		attackB = b1;
+		itemB = b2;
+		magicB = b3;
+		runB = b4;
+		attackB.setVisible(false);
+		itemB.setVisible(false);
+		magicB.setVisible(false);
+		runB.setVisible(false);
+	}
+
+	public void gameOver() {
+		gameOver = true;
 	}
 }

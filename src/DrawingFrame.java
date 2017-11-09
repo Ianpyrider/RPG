@@ -17,9 +17,4 @@ public class DrawingFrame extends JFrame
                                 setResizable(false);
                                 panel.requestFocus(true);
                 }
-                
-                public static void main(String[]args)
-                {
-                                new DrawingFrame();
-                }
 }
