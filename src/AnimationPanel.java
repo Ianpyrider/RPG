@@ -22,10 +22,11 @@ public class AnimationPanel extends JPanel implements ActionListener
 	int frameNum;
 	BufferedImage warrior;
 	BufferedImage orc;
-	BufferedImage background;
+	BufferedImage hpBar;
+	BufferedImage hpBarFull;
 	boolean attack = false;
-	int warX = 275;
-	int warY = 120;
+	int warX = 175;
+	int warY = 140;
 	JTextField text;
 	boolean gameOver = false;
 	JButton attackB;
@@ -53,7 +54,14 @@ public class AnimationPanel extends JPanel implements ActionListener
 		}
 		
 		try {
-			background = ImageIO.read(new File("Fight_Background_test.png"));
+			hpBar = ImageIO.read(new File("hpBar.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			hpBarFull = ImageIO.read(new File("hpBarFull.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,12 +70,14 @@ public class AnimationPanel extends JPanel implements ActionListener
 		t = new Timer(50,this);
 		t.start();
 	}
+	
 
 	//Overrides the paint method to draw whatever you want.
 	public void paint(Graphics g)
 	{
 		g.clearRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.RED);
+
 
 		try {
 			if (frameNum < 10) {
@@ -79,10 +89,10 @@ public class AnimationPanel extends JPanel implements ActionListener
 			e.printStackTrace();
 		}
 
-		
-		g.drawImage(background, 200, 0, this);
 		g.drawImage(warrior,warX,warY,this); //img link, upper left corner coor, this
-		g.drawImage(orc, 650, 0, this);
+		g.drawImage(orc, 525, 140, this);
+		g.drawImage(hpBarFull, 15, 0, this);
+		g.drawImage(hpBar, 50, 75, this);
 	}
 
 	//Modify this method as needed.
@@ -110,7 +120,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 					} 
 				}
 				repaint();
-			} else if (warX>275) {
+			} else if (warX>175) {
 				warX-=90;
 				frameNum++;		
 				if (frameNum>9) {
