@@ -22,9 +22,10 @@ public class AnimationPanel extends JPanel implements ActionListener
 	int frameNum;
 	BufferedImage warrior;
 	BufferedImage orc;
+	BufferedImage background;
 	boolean attack = false;
-	int warX = 175;
-	int warY = 140;
+	int warX = 275;
+	int warY = 120;
 	JTextField text;
 	boolean gameOver = false;
 	JButton attackB;
@@ -50,6 +51,13 @@ public class AnimationPanel extends JPanel implements ActionListener
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		try {
+			background = ImageIO.read(new File("Fight_Background_test.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		t = new Timer(50,this);
 		t.start();
@@ -71,8 +79,10 @@ public class AnimationPanel extends JPanel implements ActionListener
 			e.printStackTrace();
 		}
 
+		
+		g.drawImage(background, 200, 0, this);
 		g.drawImage(warrior,warX,warY,this); //img link, upper left corner coor, this
-		g.drawImage(orc, 525, 140, this);
+		g.drawImage(orc, 650, 0, this);
 	}
 
 	//Modify this method as needed.
@@ -100,7 +110,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 					} 
 				}
 				repaint();
-			} else if (warX>175) {
+			} else if (warX>275) {
 				warX-=90;
 				frameNum++;		
 				if (frameNum>9) {

@@ -13,15 +13,15 @@ import javax.swing.JTextField;
 
 public class Frame implements ActionListener  {
 	private JFrame frame;
-	private  JButton attack;
-	private  JButton item;
-	private  JButton magic;
-	private  JButton b4;
+	private JButton attack;
+	private JButton item;
+	private JButton magic;
+	private JButton b4;
 	private AnimationPanel screen;
-	private  JButton healthp;
+	private JButton healthp;
 	private JButton manap;
 	private JButton monsterSelect;
-	private  JTextField text;
+	private JTextField text;
 	private int battleIndex = 0;
 	private Battle battle;
 	private boolean gameOver;
@@ -36,6 +36,7 @@ public class Frame implements ActionListener  {
 		b4 = new JButton("Give up");
 		screen = new AnimationPanel();
 		healthp = new JButton("HP Potion (" + battle.playerHPotions() + ")");
+		manap = new JButton("MP Potion");
 		monsterSelect = new JButton("Monster 1");
 		text = new JTextField("       Choose an action");
 
@@ -47,9 +48,9 @@ public class Frame implements ActionListener  {
 		healthp.setBounds(100,725,278,150);//set x,y,width,height of button
 		healthp.setFont(new Font("Ariel", 50, 50));
 
-		//manap.addActionListener(this);//assign thef action to this button
-		//manap.setBounds(100,725,278,150);//set x,y,width,height of button
-		//manap.setFont(new Font("Ariel", 50, 50));
+		manap.addActionListener(this);//assign thef action to this button
+		manap.setBounds(424,725,278,150);//set x,y,width,height of button
+		manap.setFont(new Font("Ariel", 50, 50));
 
 		item.addActionListener(this);//assign thef action to this button
 		item.setBounds(424,725,278,150);//set x,y,width,height of button
@@ -71,8 +72,8 @@ public class Frame implements ActionListener  {
 		text.setFont(new Font("Ariel", 40, 40));
 
 		frame.add(screen);
-		screen.setSize(1250, 500);
-		screen.setLocation(100,60);
+		screen.setSize(1500, 550);
+		screen.setLocation(0, 0);
 
 		frame.setSize(1500,1000);
 		frame.getContentPane().setBackground(Color.RED);
@@ -83,14 +84,11 @@ public class Frame implements ActionListener  {
 		frame.add(magic);
 		frame.add(b4);
 		frame.add(healthp);
+		frame.add(manap);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//end program when window closes
 		frame.setVisible(true);//make the frame visible
 		healthp.setVisible(false);
-	}
-
-	public void win() {
-		text.setText("      You win!");
-		attack.setVisible(false);
+		manap.setVisible(false);
 	}
 
 	public boolean playerAttack() {
@@ -126,7 +124,8 @@ public class Frame implements ActionListener  {
 			magic.setVisible(false);
 			b4.setVisible(false);
 			healthp.setVisible(true);
-			text.setText("Choose an item");
+			manap.setVisible(true);
+			text.setText("       Choose an item");
 		}
 		if (evt.getSource() == healthp) {
 			if (battle.newBattle(1)) {
@@ -148,10 +147,10 @@ public class Frame implements ActionListener  {
 			b4.setVisible(true);
 			healthp.setText("HP Potion (" + battle.playerHPotions() + ")");
 			healthp.setVisible(false);
+			manap.setVisible(false);
 		}
 		if (evt.getSource() == magic) {
 			if (battle.newBattle(3)) {
-				System.out.println(battle.win());
 				if (battle.win()) {
 					text.setText("       You win!");
 					attack.setVisible(false);
@@ -162,6 +161,24 @@ public class Frame implements ActionListener  {
 					battleIndex++;
 					battle.resetBattle(battleIndex);
 				} else {
+					screen.gameOver();
+					screen.attack(text, attack, item, magic, b4);
+					text.setText("       Game over!");
+				}
+			}
+		}
+		if (evt.getSource() == b4) {
+			screen.gameOver();
+			screen.attack(text, attack, item, magic, b4);
+			text.setText("       Game over!");
+			System.out.println("With no more fight left in him, our noble hero fell on his sword.");
+		}
+		if (evt.getSource() == manap) {
+			if (battle.newBattle(4)) {
+				if (!(battle.playerDead())) {
+					battleIndex++;
+					battle.resetBattle(battleIndex);
+				} else {
 					text.setText("      Game over!");
 					attack.setVisible(false);
 					item.setVisible(false);
@@ -169,6 +186,13 @@ public class Frame implements ActionListener  {
 					b4.setVisible(false);
 				}
 			}
+			text.setText("Choose an action");
+			attack.setVisible(true);
+			item.setVisible(true);
+			magic.setVisible(true);
+			b4.setVisible(true);
+			healthp.setVisible(false);
+			manap.setVisible(false);
 		}
 	}
 }

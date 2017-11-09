@@ -28,13 +28,11 @@ public class Battle {
 			asgoroth = new Monster(20, 10, 2, "Asgoroth, destroyer of worlds");
 			currentMonster = asgoroth;
 			System.out.println("\n" + currentMonster.getName() + " appears!");
-		} else {
-			//win();
 		}
 	}
 
 	public boolean newBattle(int actionIndex) {
-		
+
 		if (actionIndex == 0) {
 			int playerDamage = player1.attack();
 
@@ -115,9 +113,9 @@ public class Battle {
 					return false;
 				} else  {
 					player1.heal(true);
-					
+
 					System.out.println("\nPlayer casts heal!\n");
-					
+
 					if (player1.getHealth() > player1.getMaxHP()) {
 						System.out.println("Player healed to max health!");
 						player1.setHealth(player1.getMaxHP());
@@ -156,27 +154,66 @@ public class Battle {
 				dead = true;
 				return true;
 			}
-		}
-		return false;
-	}
-	
-	public int playerHPotions() {
-		return player1.getHPotions();
-	}
-	
-	public int playerMPotions() {
-		return player1.getMPotions();
-	}
+		} else if (actionIndex == 4) {
+			
+			if (player1.getMPotions() > 0) {
 
-	public  boolean playerDead() {
-		return dead;
-	}
-	
-	public boolean playerAttack() {
-		return playerAttack;
-	}
-	
-	public boolean win() {
-		return win;
-	}
+				if (player1.getMana() == player1.getMaxMP()) {
+					System.out.println("You already have full mana!");
+					return false;
+				} else {
+					player1.restoreMana();
+
+					if (player1.getMana() > player1.getMaxMP()) {
+						System.out.println("Player healed to max mana!");
+						player1.setMana(player1.getMaxMP());
+					} else {
+						System.out.println("\nMana restored!\n");
+					}
+
+					System.out.println(currentMonster.getName() + " attacks!");
+
+					int monsterDamage = currentMonster.attack();
+
+					System.out.println(monsterDamage + " damage done.");
+
+					if (monsterDamage >= player1.getHealth()) {
+						System.out.println("The player is dead!");
+						player1.damaged(monsterDamage);
+						dead = true;
+						return true;
+					} else {
+						player1.damaged(monsterDamage);
+						System.out.println("Player has " + player1.getHealth() + " health remaining.");
+					}
+
+					return false;
+				}
+			} else {
+				System.out.println("Not enough mana potions!");
+				return false;
+			}
+		}
+	return false;
+}
+
+public int playerHPotions() {
+	return player1.getHPotions();
+}
+
+public int playerMPotions() {
+	return player1.getMPotions();
+}
+
+public  boolean playerDead() {
+	return dead;
+}
+
+public boolean playerAttack() {
+	return playerAttack;
+}
+
+public boolean win() {
+	return win;
+}
 }

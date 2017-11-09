@@ -4,6 +4,7 @@ public class PartyMember {
 	private Weapon weapon;
 	private int mana;
 	private int maxHP;
+	private int maxMP;
 	private int level = 1;
 	
 	//Slot one is health potions and slot 2 is mana potions
@@ -16,6 +17,7 @@ public class PartyMember {
 		weapon = new Weapon(weaponid);
 		mana = pmana;
 		maxHP = phealth;
+		maxMP = pmana;
 	}
 	
 	public int attack() {
@@ -59,6 +61,10 @@ public class PartyMember {
 	
 	public int getMaxHP() {
 		return maxHP;
+	} 
+	
+	public int getMaxMP() {
+		return maxMP;
 	}
 	
 	public void setHealth(int newhealth) {
@@ -71,5 +77,13 @@ public class PartyMember {
 	
 	public int getMPotions() {
 		return items[1];
+	}
+	
+	public void restoreMana() {
+		mana += 5;
+	}
+	
+	public void setMana(int newmana) {
+		mana = newmana;
 	}
 }
