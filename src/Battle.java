@@ -10,7 +10,8 @@ public class Battle {
 	boolean playerAttack = false;
 	boolean win = false;
 	public int playerDamage;
-
+	int[] retval = new int[] {0, 0, 0};
+	
 	public  void resetBattle(int battleIndex) {
 		if (battleIndex == 0) {
 			System.out.println(currentMonster.getName() + " appears!");
@@ -32,10 +33,12 @@ public class Battle {
 		}
 	}
 
-	public boolean newBattle(int actionIndex) {
+	public int[] newBattle(int actionIndex) {
 
 		if (actionIndex == 0) {
 			playerDamage = player1.attack();
+			
+			retval[1] = playerDamage;
 			
 			System.out.println("\nPlayer attacks!");
 			System.out.println(playerDamage + " damage done.");
@@ -43,38 +46,43 @@ public class Battle {
 			if (playerDamage >= currentMonster.getHealth()) {
 				System.out.println(currentMonster.getName() + " is dead!");
 				currentMonster.damaged(playerDamage);
-				return true;
+				retval[0] = 1;
+				return retval;
 			} else {
 				if (player1.getHealth() > 0) {
 					currentMonster.damaged(playerDamage);
 					System.out.println(currentMonster.getName() +" has " + currentMonster.getHealth() + " health remaining.");
 					System.out.println(currentMonster.getName() + " attacks!");
 				} else {
-					return true;
+					retval[0] = 1;
+					return retval;
 				}
 				int monsterDamage = currentMonster.attack();
 
+				retval[2] = monsterDamage;
+			
 				System.out.println(monsterDamage + " damage done.");
 
 				if (monsterDamage >= player1.getHealth()) {
 					System.out.println("The player is dead!");
 					player1.damaged(monsterDamage);
 					dead = true;
-					return true;
+					retval[0] = 1;
+					return retval;
 				} else {
 					player1.damaged(monsterDamage);
 					System.out.println("Player has " + player1.getHealth() + " health remaining.");
 				}
 			}
 
-			return false;
+			return retval;
 
 		} else if (actionIndex == 1) {
 			if (player1.getHPotions() > 0) {
 
 				if (player1.getHealth() == player1.getMaxHP()) {
 					System.out.println("You already have full health!");
-					return false;
+					return retval;
 				} else {
 					player1.heal(false);
 
@@ -88,6 +96,8 @@ public class Battle {
 					System.out.println(currentMonster.getName() + " attacks!");
 
 					int monsterDamage = currentMonster.attack();
+					
+					retval[2] = monsterDamage;
 
 					System.out.println(monsterDamage + " damage done.");
 
@@ -95,23 +105,24 @@ public class Battle {
 						System.out.println("The player is dead!");
 						player1.damaged(monsterDamage);
 						dead = true;
-						return true;
+						retval[0] = 1;
+						return retval;
 					} else {
 						player1.damaged(monsterDamage);
 						System.out.println("Player has " + player1.getHealth() + " health remaining.");
 					}
 
-					return false;
+					return retval;
 				}
 			} else {
 				System.out.println("Not enough health potions!");
-				return false;
+				return retval;
 			}
 		} else if (actionIndex == 2) {
 			if (player1.getMana() >= 5) {
 				if (player1.getHealth() == player1.getMaxHP()) {
 					System.out.println("You already have full health!");
-					return false;
+					return retval;
 				} else  {
 					player1.heal(true);
 
@@ -125,6 +136,8 @@ public class Battle {
 					System.out.println(currentMonster.getName() + " attacks!");
 
 					int monsterDamage = currentMonster.attack();
+					
+					retval[2] = monsterDamage;
 
 					System.out.println(monsterDamage + " damage done.");
 
@@ -132,28 +145,31 @@ public class Battle {
 						System.out.println("The player is dead!");
 						player1.damaged(monsterDamage);
 						dead = true;
-						return true;
+						retval[0] = 1;
+						return retval;
 					} else {
 						player1.damaged(monsterDamage);
 						System.out.println("Player has " + player1.getHealth() + " health remaining.");
 					}
 
-					return false;
+					return retval;
 				}
 			} else {
 				System.out.println("Not enough mana!");
-				return false;
+				return retval;
 			}
 		} else if (actionIndex == 3) {
 			if (currentMonster == asgoroth) {
 				System.out.println("A storm rumbles overhead... ASGOROTH IS SMITED DOWN");
 				System.out.println("You win!");
 				win = true;
-				return true;
+				retval[0] = 1;
+				return retval;
 			} else {
 				System.out.println("A storm rumbles overhead... YOU ARE SMITED DOWN");
 				dead = true;
-				return true;
+				retval[0] = 1;
+				return retval;
 			}
 		} else if (actionIndex == 4) {
 
@@ -161,7 +177,7 @@ public class Battle {
 
 				if (player1.getMana() == player1.getMaxMP()) {
 					System.out.println("You already have full mana!");
-					return false;
+					return retval;
 				} else {
 					player1.restoreMana();
 
@@ -175,6 +191,8 @@ public class Battle {
 					System.out.println(currentMonster.getName() + " attacks!");
 
 					int monsterDamage = currentMonster.attack();
+					
+					retval[2] = monsterDamage;
 
 					System.out.println(monsterDamage + " damage done.");
 
@@ -182,20 +200,21 @@ public class Battle {
 						System.out.println("The player is dead!");
 						player1.damaged(monsterDamage);
 						dead = true;
-						return true;
+						retval[0] = 1;
+						return retval;
 					} else {
 						player1.damaged(monsterDamage);
 						System.out.println("Player has " + player1.getHealth() + " health remaining.");
 					}
 
-					return false;
+					return retval;
 				}
 			} else {
 				System.out.println("Not enough mana potions!");
-				return false;
+				return retval;
 			}
 		}
-		return false;
+		return retval;
 	}
 
 	public int playerHPotions() {

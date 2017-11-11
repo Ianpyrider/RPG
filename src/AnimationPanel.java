@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -38,6 +39,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 	JButton magicB;
 	JButton runB;
 	int damage;
+	int monsterDamage;
 
 	public AnimationPanel()
 	{
@@ -125,7 +127,8 @@ public class AnimationPanel extends JPanel implements ActionListener
 						frameNum = 0;
 						attack = false;
 						if (!gameOver) {
-							text.setText("       The hero dealt " + damage + " damage. Choose an action");
+							text.setFont(new Font("Ariel", 36, 36));
+							text.setText("       The hero dealt " + damage + " damage. Hero received " + monsterDamage + " damage. Choose an action");
 							attackB.setVisible(true);
 							itemB.setVisible(true);
 							magicB.setVisible(true);
@@ -173,5 +176,9 @@ public class AnimationPanel extends JPanel implements ActionListener
 	
 	public void getDamage(int dmg) {
 		damage = dmg;
+	}
+	
+	public void getMonsterDamage(int dmg) {
+		monsterDamage = dmg;
 	}
 }

@@ -23,6 +23,7 @@ public class Frame implements ActionListener  {
 	private JButton monsterSelect;
 	private JButton healspell;
 	private JButton smite;
+	private JButton back;
 	private JTextField text;
 	private int battleIndex = 0;
 	private Battle battle;
@@ -38,10 +39,11 @@ public class Frame implements ActionListener  {
 		b4 = new JButton("Give up");
 		screen = new AnimationPanel();
 		healthp = new JButton("HP Potion (" + battle.playerHPotions() + ")");
-		manap = new JButton("MP Potion");
+		manap = new JButton("MP Potion (" + battle.playerMPotions() + ")");
 		monsterSelect = new JButton("Monster 1");
 		healspell = new JButton("Heal");
 		smite = new JButton("Smite");
+		back = new JButton("Back");
 		text = new JTextField("       Choose an action");
 
 		attack.addActionListener(this);//assign thef action to this button
@@ -78,6 +80,10 @@ public class Frame implements ActionListener  {
 		smite.addActionListener(this);//assign thef action to this button
 		smite.setBounds(424,725,278,150);//set x,y,width,height of button
 		smite.setFont(new Font("Ariel", 40, 40));
+		
+		back.addActionListener(this);//assign thef action to this button
+		back.setBounds(1072,725,278,150);//set x,y,width,height of button
+		back.setFont(new Font("Ariel", 40, 40));
 
 		text.setEditable(false);
 		text.setBounds(100, 600, 1250, 100);
@@ -99,12 +105,14 @@ public class Frame implements ActionListener  {
 		frame.add(manap);
 		frame.add(healspell);
 		frame.add(smite);
+		frame.add(back);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//end program when window closes
 		frame.setVisible(true);//make the frame visible
 		healthp.setVisible(false);
 		manap.setVisible(false);
 		healspell.setVisible(false);
 		smite.setVisible(false);
+		back.setVisible(false);
 	}
 
 	public boolean playerAttack() {
@@ -118,7 +126,13 @@ public class Frame implements ActionListener  {
 
 			screen.attack(text, attack, item, magic, b4);
 
-			if (battle.newBattle(0)) {
+			int[] result = battle.newBattle(0);
+
+			screen.getDamage(result[1]);
+			
+			screen.getMonsterDamage(result[2]);
+
+			if (result[0] == 1) {
 
 				if (!(battle.playerDead())) {
 					battleIndex++;
@@ -126,10 +140,6 @@ public class Frame implements ActionListener  {
 				} else {
 					screen.gameOver();
 					text.setText("      Game over!");
-					attack.setVisible(false);
-					item.setVisible(false);
-					magic.setVisible(false);
-					b4.setVisible(false);
 					gameOver = true;
 				}
 			}
@@ -141,29 +151,33 @@ public class Frame implements ActionListener  {
 			b4.setVisible(false);
 			healthp.setVisible(true);
 			manap.setVisible(true);
+			back.setVisible(true);
 			text.setText("       Choose an item");
 		}
 		if (evt.getSource() == healthp) {
-			if (battle.newBattle(1)) {
+			if (battle.newBattle(1)[0] == 1) {
 				if (!(battle.playerDead())) {
 					battleIndex++;
 					battle.resetBattle(battleIndex);
 				} else {
+					screen.gameOver();
 					text.setText("      Game over!");
-					attack.setVisible(false);
-					item.setVisible(false);
-					magic.setVisible(false);
-					b4.setVisible(false);
+					healthp.setVisible(false);
+					manap.setVisible(false);
+					back.setVisible(false);
+					gameOver = true;
 				}
+			} else {
+				text.setText("       Drank a health potion! Choose an action");
+				attack.setVisible(true);
+				item.setVisible(true);
+				magic.setVisible(true);
+				b4.setVisible(true);
+				healthp.setText("HP Potion (" + battle.playerHPotions() + ")");
+				healthp.setVisible(false);
+				manap.setVisible(false);
+				back.setVisible(false);
 			}
-			text.setText("       Drank a health potion! Choose an action");
-			attack.setVisible(true);
-			item.setVisible(true);
-			magic.setVisible(true);
-			b4.setVisible(true);
-			healthp.setText("HP Potion (" + battle.playerHPotions() + ")");
-			healthp.setVisible(false);
-			manap.setVisible(false);
 		}
 		if (evt.getSource() == magic) {
 			attack.setVisible(false);
@@ -172,25 +186,29 @@ public class Frame implements ActionListener  {
 			b4.setVisible(false);
 			healspell.setVisible(true);
 			smite.setVisible(true);
+			back.setVisible(true);
 			text.setText("       Cast a spell");
 		}
 		if (evt.getSource() == b4) {
 			screen.gameOver();
 			screen.attack(text, attack, item, magic, b4);
-			text.setText("       Game over!");
+			text.setText("       With no more fight left in him, our noble hero fell on his sword. Game over!");
+			text.setFont(new Font("Ariel", 35, 35));
 			System.out.println("With no more fight left in him, our noble hero fell on his sword.");
 		}
 		if (evt.getSource() == manap) {
-			if (battle.newBattle(4)) {
+			if (battle.newBattle(4)[0] == 1) {
 				if (!(battle.playerDead())) {
 					battleIndex++;
 					battle.resetBattle(battleIndex);
 				} else {
-					text.setText("      Game over!");
+					screen.gameOver();
 					attack.setVisible(false);
 					item.setVisible(false);
 					magic.setVisible(false);
 					b4.setVisible(false);
+					text.setText("      Game over!");
+					gameOver = true;
 				}
 			}
 			text.setText("       Mana restored! Choose an action");
@@ -200,15 +218,17 @@ public class Frame implements ActionListener  {
 			b4.setVisible(true);
 			healthp.setVisible(false);
 			manap.setVisible(false);
+			back.setVisible(false);
 		}
 
 		if (evt.getSource() == smite) {
-			if (battle.newBattle(3)) {
+			if (battle.newBattle(3)[0] == 1) {
 				if (battle.win()) {
-					text.setFont(new Font("Ariel", 36, 36));
+					text.setFont(new Font("Ariel", 35, 35));
 					text.setText("       A storm rumbles overhead... ASGOROTH IS SMITED DOWN. Game over!");
 					smite.setVisible(false);
 					healspell.setVisible(false);
+					back.setVisible(false);
 				} else if (!(battle.playerDead())) {
 					battleIndex++;
 					battle.resetBattle(battleIndex);
@@ -217,23 +237,26 @@ public class Frame implements ActionListener  {
 					screen.attack(text, attack, item, magic, b4);
 					smite.setVisible(false);
 					healspell.setVisible(false);
-					text.setFont(new Font("Ariel", 36, 36));
+					back.setVisible(false);
+					text.setFont(new Font("Ariel", 35, 35));
 					text.setText("       A storm rumbles overhead... YOU ARE SMITED DOWN. Game over!");
 				}
 			}
 		}
-		
+
 		if (evt.getSource() == healspell) {
-			if (battle.newBattle(2)) {
+			if (battle.newBattle(2)[0] == 1) {
 				if (!(battle.playerDead())) {
 					battleIndex++;
 					battle.resetBattle(battleIndex);
 				} else {
-					text.setText("      Game over!");
+					screen.gameOver();
 					attack.setVisible(false);
 					item.setVisible(false);
 					magic.setVisible(false);
 					b4.setVisible(false);
+					text.setText("      Game over!");
+					gameOver = true;
 				}
 			}
 			text.setText("       Healing spell cast! Choose an action");
@@ -243,6 +266,20 @@ public class Frame implements ActionListener  {
 			b4.setVisible(true);
 			healspell.setVisible(false);
 			smite.setVisible(false);
+			back.setVisible(false);
+		}
+		
+		if (evt.getSource() == back) {
+			healthp.setVisible(false);
+			manap.setVisible(false);
+			healspell.setVisible(false);
+			smite.setVisible(false);
+			back.setVisible(false);
+			attack.setVisible(true);
+			item.setVisible(true);
+			magic.setVisible(true);
+			b4.setVisible(true);
+			text.setText("       Choose an action");
 		}
 	}
 }

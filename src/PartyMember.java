@@ -8,7 +8,7 @@ public class PartyMember {
 	private int level = 1;
 	
 	//Slot one is health potions and slot 2 is mana potions
-	private int[] items = new int[] {3, 1};
+	private int[] items = new int[] {3, 2};
 	
 	
 	public PartyMember (int phealth, int pdamage, int weaponid, int pmana) {
@@ -81,6 +81,7 @@ public class PartyMember {
 	
 	public void restoreMana() {
 		mana += 5;
+		items[1]--;
 	}
 	
 	public void setMana(int newmana) {
