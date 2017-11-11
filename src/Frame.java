@@ -21,6 +21,8 @@ public class Frame implements ActionListener  {
 	private JButton healthp;
 	private JButton manap;
 	private JButton monsterSelect;
+	private JButton healspell;
+	private JButton smite;
 	private JTextField text;
 	private int battleIndex = 0;
 	private Battle battle;
@@ -38,6 +40,8 @@ public class Frame implements ActionListener  {
 		healthp = new JButton("HP Potion (" + battle.playerHPotions() + ")");
 		manap = new JButton("MP Potion");
 		monsterSelect = new JButton("Monster 1");
+		healspell = new JButton("Heal");
+		smite = new JButton("Smite");
 		text = new JTextField("       Choose an action");
 
 		attack.addActionListener(this);//assign thef action to this button
@@ -46,11 +50,11 @@ public class Frame implements ActionListener  {
 
 		healthp.addActionListener(this);//assign thef action to this button
 		healthp.setBounds(100,725,278,150);//set x,y,width,height of button
-		healthp.setFont(new Font("Ariel", 50, 50));
+		healthp.setFont(new Font("Ariel", 40, 40));
 
 		manap.addActionListener(this);//assign thef action to this button
 		manap.setBounds(424,725,278,150);//set x,y,width,height of button
-		manap.setFont(new Font("Ariel", 50, 50));
+		manap.setFont(new Font("Ariel", 40, 40));
 
 		item.addActionListener(this);//assign thef action to this button
 		item.setBounds(424,725,278,150);//set x,y,width,height of button
@@ -67,6 +71,14 @@ public class Frame implements ActionListener  {
 		monsterSelect.setBounds(150,425,200,100);//set x,y,width,height of button
 		monsterSelect.setFont(new Font("Ariel", 30, 30));
 
+		healspell.addActionListener(this);//assign thef action to this button
+		healspell.setBounds(100,725,278,150);//set x,y,width,height of button
+		healspell.setFont(new Font("Ariel", 40, 40));
+
+		smite.addActionListener(this);//assign thef action to this button
+		smite.setBounds(424,725,278,150);//set x,y,width,height of button
+		smite.setFont(new Font("Ariel", 40, 40));
+
 		text.setEditable(false);
 		text.setBounds(100, 600, 1250, 100);
 		text.setFont(new Font("Ariel", 40, 40));
@@ -76,7 +88,7 @@ public class Frame implements ActionListener  {
 		screen.setLocation(0, 0);
 
 		frame.setSize(1500,1000);
-		frame.getContentPane().setBackground(Color.RED);
+		frame.getContentPane().setBackground(Color.LIGHT_GRAY);
 		frame.setLayout(null);//using no layout managers 
 		frame.add(attack);//add b1 to the frame
 		frame.add(text);
@@ -85,10 +97,14 @@ public class Frame implements ActionListener  {
 		frame.add(b4);
 		frame.add(healthp);
 		frame.add(manap);
+		frame.add(healspell);
+		frame.add(smite);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//end program when window closes
 		frame.setVisible(true);//make the frame visible
 		healthp.setVisible(false);
 		manap.setVisible(false);
+		healspell.setVisible(false);
+		smite.setVisible(false);
 	}
 
 	public boolean playerAttack() {
@@ -140,7 +156,7 @@ public class Frame implements ActionListener  {
 					b4.setVisible(false);
 				}
 			}
-			text.setText("Choose an action");
+			text.setText("       Drank a health potion! Choose an action");
 			attack.setVisible(true);
 			item.setVisible(true);
 			magic.setVisible(true);
@@ -150,22 +166,13 @@ public class Frame implements ActionListener  {
 			manap.setVisible(false);
 		}
 		if (evt.getSource() == magic) {
-			if (battle.newBattle(3)) {
-				if (battle.win()) {
-					text.setText("       You win!");
-					attack.setVisible(false);
-					item.setVisible(false);
-					magic.setVisible(false);
-					b4.setVisible(false);
-				} else if (!(battle.playerDead())) {
-					battleIndex++;
-					battle.resetBattle(battleIndex);
-				} else {
-					screen.gameOver();
-					screen.attack(text, attack, item, magic, b4);
-					text.setText("       Game over!");
-				}
-			}
+			attack.setVisible(false);
+			item.setVisible(false);
+			magic.setVisible(false);
+			b4.setVisible(false);
+			healspell.setVisible(true);
+			smite.setVisible(true);
+			text.setText("       Cast a spell");
 		}
 		if (evt.getSource() == b4) {
 			screen.gameOver();
@@ -186,13 +193,56 @@ public class Frame implements ActionListener  {
 					b4.setVisible(false);
 				}
 			}
-			text.setText("Choose an action");
+			text.setText("       Mana restored! Choose an action");
 			attack.setVisible(true);
 			item.setVisible(true);
 			magic.setVisible(true);
 			b4.setVisible(true);
 			healthp.setVisible(false);
 			manap.setVisible(false);
+		}
+
+		if (evt.getSource() == smite) {
+			if (battle.newBattle(3)) {
+				if (battle.win()) {
+					text.setFont(new Font("Ariel", 36, 36));
+					text.setText("       A storm rumbles overhead... ASGOROTH IS SMITED DOWN. Game over!");
+					smite.setVisible(false);
+					healspell.setVisible(false);
+				} else if (!(battle.playerDead())) {
+					battleIndex++;
+					battle.resetBattle(battleIndex);
+				} else {
+					screen.gameOver();
+					screen.attack(text, attack, item, magic, b4);
+					smite.setVisible(false);
+					healspell.setVisible(false);
+					text.setFont(new Font("Ariel", 36, 36));
+					text.setText("       A storm rumbles overhead... YOU ARE SMITED DOWN. Game over!");
+				}
+			}
+		}
+		
+		if (evt.getSource() == healspell) {
+			if (battle.newBattle(2)) {
+				if (!(battle.playerDead())) {
+					battleIndex++;
+					battle.resetBattle(battleIndex);
+				} else {
+					text.setText("      Game over!");
+					attack.setVisible(false);
+					item.setVisible(false);
+					magic.setVisible(false);
+					b4.setVisible(false);
+				}
+			}
+			text.setText("       Healing spell cast! Choose an action");
+			attack.setVisible(true);
+			item.setVisible(true);
+			magic.setVisible(true);
+			b4.setVisible(true);
+			healspell.setVisible(false);
+			smite.setVisible(false);
 		}
 	}
 }

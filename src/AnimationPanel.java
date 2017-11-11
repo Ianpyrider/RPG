@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
@@ -24,16 +25,19 @@ public class AnimationPanel extends JPanel implements ActionListener
 	BufferedImage orc;
 	BufferedImage hpBar;
 	BufferedImage hpBarFull;
+	BufferedImage background;
 	boolean attack = false;
-	int warX = 175;
-	int warY = 140;
+	int warX = 275;
+	int warY = 325;
+	int orcX = 625;
+	int orcY = 0;
 	JTextField text;
 	boolean gameOver = false;
 	JButton attackB;
 	JButton itemB;
 	JButton magicB;
 	JButton runB;
-	
+	int damage;
 
 	public AnimationPanel()
 	{
@@ -53,7 +57,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 			e.printStackTrace();
 		}
 		
-		try {
+		/*try {
 			hpBar = ImageIO.read(new File("hpBar.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -62,6 +66,13 @@ public class AnimationPanel extends JPanel implements ActionListener
 		
 		try {
 			hpBarFull = ImageIO.read(new File("hpBarFull.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		try {
+			background = ImageIO.read(new File("Fight_Background_Test.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,7 +87,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 	public void paint(Graphics g)
 	{
 		g.clearRect(0, 0, getWidth(), getHeight());
-		g.setColor(Color.RED);
+		g.setColor(Color.LIGHT_GRAY);
 
 
 		try {
@@ -88,9 +99,12 @@ public class AnimationPanel extends JPanel implements ActionListener
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
+		
+		g.fillRect(0, 0, 1500, 600);
+		g.drawImage(background, 200, 40, this);
 		g.drawImage(warrior,warX,warY,this); //img link, upper left corner coor, this
-		g.drawImage(orc, 525, 140, this);
+		g.drawImage(orc, 625, 25, this);
 		g.drawImage(hpBarFull, 15, 0, this);
 		g.drawImage(hpBar, 50, 75, this);
 	}
@@ -111,7 +125,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 						frameNum = 0;
 						attack = false;
 						if (!gameOver) {
-							text.setText("       Choose an action");
+							text.setText("       The hero dealt " + damage + " damage. Choose an action");
 							attackB.setVisible(true);
 							itemB.setVisible(true);
 							magicB.setVisible(true);
@@ -120,7 +134,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 					} 
 				}
 				repaint();
-			} else if (warX>175) {
+			} else if (warX>275) {
 				warX-=90;
 				frameNum++;		
 				if (frameNum>9) {
@@ -155,5 +169,9 @@ public class AnimationPanel extends JPanel implements ActionListener
 
 	public void gameOver() {
 		gameOver = true;
+	}
+	
+	public void getDamage(int dmg) {
+		damage = dmg;
 	}
 }

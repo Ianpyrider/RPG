@@ -9,6 +9,7 @@ public class Battle {
 	boolean dead = false;
 	boolean playerAttack = false;
 	boolean win = false;
+	public int playerDamage;
 
 	public  void resetBattle(int battleIndex) {
 		if (battleIndex == 0) {
@@ -34,8 +35,8 @@ public class Battle {
 	public boolean newBattle(int actionIndex) {
 
 		if (actionIndex == 0) {
-			int playerDamage = player1.attack();
-
+			playerDamage = player1.attack();
+			
 			System.out.println("\nPlayer attacks!");
 			System.out.println(playerDamage + " damage done.");
 
@@ -155,7 +156,7 @@ public class Battle {
 				return true;
 			}
 		} else if (actionIndex == 4) {
-			
+
 			if (player1.getMPotions() > 0) {
 
 				if (player1.getMana() == player1.getMaxMP()) {
@@ -194,26 +195,30 @@ public class Battle {
 				return false;
 			}
 		}
-	return false;
-}
+		return false;
+	}
 
-public int playerHPotions() {
-	return player1.getHPotions();
-}
+	public int playerHPotions() {
+		return player1.getHPotions();
+	}
 
-public int playerMPotions() {
-	return player1.getMPotions();
-}
+	public int playerMPotions() {
+		return player1.getMPotions();
+	}
 
-public  boolean playerDead() {
-	return dead;
-}
+	public  boolean playerDead() {
+		return dead;
+	}
 
-public boolean playerAttack() {
-	return playerAttack;
-}
+	public boolean playerAttack() {
+		return playerAttack;
+	}
 
-public boolean win() {
-	return win;
-}
+	public boolean win() {
+		return win;
+	}
+	
+	public int getDamage() {
+		return playerDamage;
+	}
 }
