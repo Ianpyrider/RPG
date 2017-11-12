@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -42,6 +43,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 	int damage;
 	int monsterDamage;
 	boolean start = false;
+	int health = 0;
 
 	public AnimationPanel()
 	{
@@ -67,7 +69,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 			e.printStackTrace();
 		}
 		
-		/*try {
+		try {
 			hpBar = ImageIO.read(new File("hpBar.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -79,7 +81,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		
 		try {
 			background = ImageIO.read(new File("Fight_Background_Test.png"));
@@ -109,15 +111,14 @@ public class AnimationPanel extends JPanel implements ActionListener
 			}
 		}
 		
-		
 		g.fillRect(0, 0, 1500, 600);
 		g.drawImage(background, 200, 40, this);
 		g.drawImage(warrior,warX,warY,this); //img link, upper left corner coor, this
 		g.drawImage(orc, 625, 25, this);
-		g.drawImage(hpBarFull, 15, 0, this);
-		g.drawImage(hpBar, 50, 75, this);
+		g.drawImage(hpBar, 200, 200, this);
+		g.drawImage(hpBarFull.getSubimage(0, 0, hpBarFull.getWidth()-(22*health), hpBarFull.getHeight()), 200, 200, this);
 		if (!start) {
-			g.drawImage(startScreen.getScaledInstance(1500, 650, ALLBITS), 0, 0, this);
+			g.drawImage(startScreen.getScaledInstance(1500, 650, Image.SCALE_SMOOTH), 0, 0, this);
 		}
 	}
 
@@ -162,6 +163,8 @@ public class AnimationPanel extends JPanel implements ActionListener
 				repaint();
 			}
 		} else {
+			health = 19;
+			repaint();
 			t.stop();
 		}
 	}
@@ -194,5 +197,13 @@ public class AnimationPanel extends JPanel implements ActionListener
 	
 	public void getMonsterDamage(int dmg) {
 		monsterDamage = dmg;
+	}
+	
+	public void getHealth(int phealth) {
+		if (phealth == 0) {
+			health = (428/22);
+		} else {
+			health = (20-phealth);
+		}
 	}
 }

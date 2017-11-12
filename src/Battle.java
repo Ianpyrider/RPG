@@ -75,6 +75,7 @@ public class Battle {
 				}
 			}
 
+			retval[0] = 0;
 			return retval;
 
 		} else if (actionIndex == 1) {
@@ -112,6 +113,7 @@ public class Battle {
 						System.out.println("Player has " + player1.getHealth() + " health remaining.");
 					}
 
+					retval[0] = 0;
 					return retval;
 				}
 			} else {
@@ -152,6 +154,7 @@ public class Battle {
 						System.out.println("Player has " + player1.getHealth() + " health remaining.");
 					}
 
+					retval[0] = 0;
 					return retval;
 				}
 			} else {
@@ -207,6 +210,7 @@ public class Battle {
 						System.out.println("Player has " + player1.getHealth() + " health remaining.");
 					}
 
+					retval[0] = 0;
 					return retval;
 				}
 			} else {
@@ -239,5 +243,9 @@ public class Battle {
 	
 	public int getDamage() {
 		return playerDamage;
+	}
+	
+	public int getPlayerHealth() {
+		return player1.getHealth();
 	}
 }

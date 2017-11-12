@@ -149,7 +149,6 @@ public class Frame implements ActionListener  {
 		if(evt.getSource() == attack)
 		{	
 			
-
 			screen.attack(text, attack, item, magic, b4);
 
 			int[] result = battle.newBattle(0);
@@ -157,6 +156,10 @@ public class Frame implements ActionListener  {
 			screen.getDamage(result[1]);
 			
 			screen.getMonsterDamage(result[2]);
+			
+			screen.getHealth(battle.getPlayerHealth());
+			
+			System.out.println(battle.getPlayerHealth());
 
 			if (result[0] == 1) {
 
@@ -181,6 +184,7 @@ public class Frame implements ActionListener  {
 			text.setText("       Choose an item");
 		}
 		if (evt.getSource() == healthp) {
+			
 			if (battle.newBattle(1)[0] == 1) {
 				if (!(battle.playerDead())) {
 					battleIndex++;
@@ -194,7 +198,11 @@ public class Frame implements ActionListener  {
 					gameOver = true;
 				}
 			} else {
-				text.setText("       Drank a health potion! Choose an action");
+				if (battle.getPlayerHealth() == 20) {
+					text.setText("       You already have full health! Choose an action");
+				} else {
+					text.setText("       Drank a health potion! Choose an action");
+				}
 				attack.setVisible(true);
 				item.setVisible(true);
 				magic.setVisible(true);
@@ -204,6 +212,8 @@ public class Frame implements ActionListener  {
 				manap.setVisible(false);
 				back.setVisible(false);
 			}
+			
+			screen.getHealth(battle.getPlayerHealth());
 		}
 		if (evt.getSource() == magic) {
 			attack.setVisible(false);
@@ -251,7 +261,7 @@ public class Frame implements ActionListener  {
 			if (battle.newBattle(3)[0] == 1) {
 				if (battle.win()) {
 					text.setFont(new Font("Ariel", 35, 35));
-					text.setText("       A storm rumbles overhead... ASGOROTH IS SMITED DOWN. Game over!");
+					text.setText("       A storm rumbles overhead... ASGOROTH IS SMITED DOWN. YOU WIN!");
 					smite.setVisible(false);
 					healspell.setVisible(false);
 					back.setVisible(false);
@@ -271,6 +281,7 @@ public class Frame implements ActionListener  {
 		}
 
 		if (evt.getSource() == healspell) {
+			
 			if (battle.newBattle(2)[0] == 1) {
 				if (!(battle.playerDead())) {
 					battleIndex++;
@@ -285,7 +296,11 @@ public class Frame implements ActionListener  {
 					gameOver = true;
 				}
 			}
-			text.setText("       Healing spell cast! Choose an action");
+			if (battle.getPlayerHealth() == 20) {
+				text.setText("       You already have full health! Choose an action");
+			} else {
+				text.setText("       Healing spell cast! Choose an action");
+			}
 			attack.setVisible(true);
 			item.setVisible(true);
 			magic.setVisible(true);
@@ -293,6 +308,8 @@ public class Frame implements ActionListener  {
 			healspell.setVisible(false);
 			smite.setVisible(false);
 			back.setVisible(false);
+			
+			screen.getHealth(battle.getPlayerHealth());
 		}
 		
 		if (evt.getSource() == back) {
