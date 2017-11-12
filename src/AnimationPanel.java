@@ -27,6 +27,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 	BufferedImage hpBar;
 	BufferedImage hpBarFull;
 	BufferedImage background;
+	BufferedImage startScreen;
 	boolean attack = false;
 	int warX = 275;
 	int warY = 325;
@@ -40,9 +41,16 @@ public class AnimationPanel extends JPanel implements ActionListener
 	JButton runB;
 	int damage;
 	int monsterDamage;
+	boolean start = false;
 
 	public AnimationPanel()
 	{
+		try {
+			startScreen = ImageIO.read(new File("Start Screen.PNG"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		frameNum = 0;
 
 		try {
@@ -79,27 +87,26 @@ public class AnimationPanel extends JPanel implements ActionListener
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 		t = new Timer(50,this);
 		t.start();
 	}
-	
-
 	//Overrides the paint method to draw whatever you want.
 	public void paint(Graphics g)
 	{
 		g.clearRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.LIGHT_GRAY);
-
-
-		try {
-			if (frameNum < 10) {
-				warrior = ImageIO.read(new File("frame_0" + frameNum + "_delay-0.13s.gif"));
-			} else {
-				warrior = ImageIO.read(new File("frame_" + frameNum + "_delay-0.13s.gif"));
+		
+		if (start) {
+			try {
+				if (frameNum < 10) {
+					warrior = ImageIO.read(new File("frame_0" + frameNum + "_delay-0.13s.gif"));
+				} else {
+					warrior = ImageIO.read(new File("frame_" + frameNum + "_delay-0.13s.gif"));
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		
 		
@@ -109,6 +116,9 @@ public class AnimationPanel extends JPanel implements ActionListener
 		g.drawImage(orc, 625, 25, this);
 		g.drawImage(hpBarFull, 15, 0, this);
 		g.drawImage(hpBar, 50, 75, this);
+		if (!start) {
+			g.drawImage(startScreen.getScaledInstance(1500, 650, ALLBITS), 0, 0, this);
+		}
 	}
 
 	//Modify this method as needed.
@@ -168,6 +178,10 @@ public class AnimationPanel extends JPanel implements ActionListener
 		itemB.setVisible(false);
 		magicB.setVisible(false);
 		runB.setVisible(false);
+	}
+	
+	public void start() {
+		start = true;
 	}
 
 	public void gameOver() {

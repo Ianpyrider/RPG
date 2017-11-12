@@ -3,7 +3,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -24,6 +26,7 @@ public class Frame implements ActionListener  {
 	private JButton healspell;
 	private JButton smite;
 	private JButton back;
+	private JButton start;
 	private JTextField text;
 	private int battleIndex = 0;
 	private Battle battle;
@@ -37,6 +40,7 @@ public class Frame implements ActionListener  {
 		item = new JButton("Items");
 		magic = new JButton("Magic");
 		b4 = new JButton("Give up");
+		start = new JButton("Start");
 		screen = new AnimationPanel();
 		healthp = new JButton("HP Potion (" + battle.playerHPotions() + ")");
 		manap = new JButton("MP Potion (" + battle.playerMPotions() + ")");
@@ -45,6 +49,10 @@ public class Frame implements ActionListener  {
 		smite = new JButton("Smite");
 		back = new JButton("Back");
 		text = new JTextField("       Choose an action");
+		
+		start.addActionListener(this);//assign thef action to this button
+		start.setBounds(575,625,278,150);//set x,y,width,height of button
+		start.setFont(new Font("Ariel", 50, 50));
 
 		attack.addActionListener(this);//assign thef action to this button
 		attack.setBounds(100,725,278,150);//set x,y,width,height of button
@@ -94,7 +102,7 @@ public class Frame implements ActionListener  {
 		screen.setLocation(0, 0);
 
 		frame.setSize(1500,1000);
-		frame.getContentPane().setBackground(Color.LIGHT_GRAY);
+		frame.getContentPane().setBackground(new Color(55, 55, 55));
 		frame.setLayout(null);//using no layout managers 
 		frame.add(attack);//add b1 to the frame
 		frame.add(text);
@@ -106,6 +114,7 @@ public class Frame implements ActionListener  {
 		frame.add(healspell);
 		frame.add(smite);
 		frame.add(back);
+		frame.add(start);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//end program when window closes
 		frame.setVisible(true);//make the frame visible
 		healthp.setVisible(false);
@@ -113,16 +122,33 @@ public class Frame implements ActionListener  {
 		healspell.setVisible(false);
 		smite.setVisible(false);
 		back.setVisible(false);
+		attack.setVisible(false);
+		text.setVisible(false);
+		item.setVisible(false);
+		magic.setVisible(false);
+		b4.setVisible(false);
+		screen.setVisible(true);
 	}
 
 	public boolean playerAttack() {
 		return battle.playerAttack();
 	}
-
+	
 	public void actionPerformed(ActionEvent evt)
 	{
+		if (evt.getSource() == start) {
+			attack.setVisible(true);
+			text.setVisible(true);
+			item.setVisible(true);
+			magic.setVisible(true);
+			b4.setVisible(true);
+			start.setVisible(false);
+			frame.getContentPane().setBackground(Color.LIGHT_GRAY);
+			screen.start();
+		}
 		if(evt.getSource() == attack)
 		{	
+			
 
 			screen.attack(text, attack, item, magic, b4);
 
