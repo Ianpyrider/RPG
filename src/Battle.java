@@ -10,6 +10,7 @@ public class Battle {
 	boolean playerAttack = false;
 	boolean win = false;
 	public int playerDamage;
+	public int monsterDamage;
 	int[] retval = new int[] {0, 0, 0};
 	
 	public  void resetBattle(int battleIndex) {
@@ -22,7 +23,7 @@ public class Battle {
 			System.out.println("\n" + currentMonster.getName() + " appears!");
 		} else if (battleIndex == 2) {
 			System.out.println("A new challenger approaches...");
-			minotaur = new Monster(10, 1, 1, "Ian the minotaur");
+			minotaur = new Monster(10, 1, 4, "Ian the minotaur");
 			currentMonster = minotaur;
 			System.out.println("\n" + currentMonster.getName() + " appears!");
 		} else if (battleIndex == 3) {
@@ -57,7 +58,7 @@ public class Battle {
 					retval[0] = 1;
 					return retval;
 				}
-				int monsterDamage = currentMonster.attack();
+				monsterDamage = currentMonster.attack();
 
 				retval[2] = monsterDamage;
 			
@@ -96,7 +97,7 @@ public class Battle {
 
 					System.out.println(currentMonster.getName() + " attacks!");
 
-					int monsterDamage = currentMonster.attack();
+					monsterDamage = currentMonster.attack();
 					
 					retval[2] = monsterDamage;
 
@@ -137,7 +138,7 @@ public class Battle {
 
 					System.out.println(currentMonster.getName() + " attacks!");
 
-					int monsterDamage = currentMonster.attack();
+					monsterDamage = currentMonster.attack();
 					
 					retval[2] = monsterDamage;
 
@@ -193,7 +194,7 @@ public class Battle {
 
 					System.out.println(currentMonster.getName() + " attacks!");
 
-					int monsterDamage = currentMonster.attack();
+					monsterDamage = currentMonster.attack();
 					
 					retval[2] = monsterDamage;
 
@@ -247,5 +248,13 @@ public class Battle {
 	
 	public int getPlayerHealth() {
 		return player1.getHealth();
+	}
+	
+	public int getMonsterDamage() {
+		return monsterDamage;
+	}
+	
+	public int getPlayerMana() {
+		return player1.getMana();
 	}
 }

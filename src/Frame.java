@@ -31,6 +31,7 @@ public class Frame implements ActionListener  {
 	private int battleIndex = 0;
 	private Battle battle;
 	private boolean gameOver;
+	private int playerMana;
 
 	public Frame()
 	{
@@ -166,9 +167,10 @@ public class Frame implements ActionListener  {
 				if (!(battle.playerDead())) {
 					battleIndex++;
 					battle.resetBattle(battleIndex);
+					screen.updateMonster();
 				} else {
 					screen.gameOver();
-					text.setText("      Game over!");
+					text.setText("      Monster dealt " + battle.getMonsterDamage() +" damage. Game over!");
 					gameOver = true;
 				}
 			}
@@ -188,10 +190,11 @@ public class Frame implements ActionListener  {
 			if (battle.newBattle(1)[0] == 1) {
 				if (!(battle.playerDead())) {
 					battleIndex++;
+					screen.updateMonster();
 					battle.resetBattle(battleIndex);
 				} else {
 					screen.gameOver();
-					text.setText("      Game over!");
+					text.setText("      Monster dealt " + battle.getMonsterDamage() +" damage. Game over!");
 					healthp.setVisible(false);
 					manap.setVisible(false);
 					back.setVisible(false);
@@ -201,7 +204,11 @@ public class Frame implements ActionListener  {
 				if (battle.getPlayerHealth() == 20) {
 					text.setText("       You already have full health! Choose an action");
 				} else {
-					text.setText("       Drank a health potion! Choose an action");
+					if (battle.playerHPotions() > 0) {
+						text.setText("       Drank a health potion! Choose an action");
+					} else {
+						text.setText("       Not enough health potions!");
+					}
 				}
 				attack.setVisible(true);
 				item.setVisible(true);
@@ -236,6 +243,7 @@ public class Frame implements ActionListener  {
 			if (battle.newBattle(4)[0] == 1) {
 				if (!(battle.playerDead())) {
 					battleIndex++;
+					screen.updateMonster();
 					battle.resetBattle(battleIndex);
 				} else {
 					screen.gameOver();
@@ -243,11 +251,15 @@ public class Frame implements ActionListener  {
 					item.setVisible(false);
 					magic.setVisible(false);
 					b4.setVisible(false);
-					text.setText("      Game over!");
+					text.setText("      Monster dealt " + battle.getMonsterDamage() +" damage. Game over!");
 					gameOver = true;
 				}
 			}
-			text.setText("       Mana restored! Choose an action");
+			if (battle.getPlayerMana() == 10) {
+				text.setText("       You already have full mana! Choose an action");
+			} else {
+				text.setText("       Mana restored! Choose an action");
+			}
 			attack.setVisible(true);
 			item.setVisible(true);
 			magic.setVisible(true);
@@ -267,6 +279,7 @@ public class Frame implements ActionListener  {
 					back.setVisible(false);
 				} else if (!(battle.playerDead())) {
 					battleIndex++;
+					screen.updateMonster();
 					battle.resetBattle(battleIndex);
 				} else {
 					screen.gameOver();
@@ -282,9 +295,12 @@ public class Frame implements ActionListener  {
 
 		if (evt.getSource() == healspell) {
 			
+			playerMana = battle.getPlayerMana();
+			
 			if (battle.newBattle(2)[0] == 1) {
 				if (!(battle.playerDead())) {
 					battleIndex++;
+					screen.updateMonster();
 					battle.resetBattle(battleIndex);
 				} else {
 					screen.gameOver();
@@ -292,14 +308,18 @@ public class Frame implements ActionListener  {
 					item.setVisible(false);
 					magic.setVisible(false);
 					b4.setVisible(false);
-					text.setText("      Game over!");
+					text.setText("      Monster dealt " + battle.getMonsterDamage() +" damage. Game over!");
 					gameOver = true;
 				}
 			}
 			if (battle.getPlayerHealth() == 20) {
 				text.setText("       You already have full health! Choose an action");
 			} else {
-				text.setText("       Healing spell cast! Choose an action");
+				if (playerMana > 0) {
+					text.setText("       Healing spell cast! Monster dealt " + battle.getMonsterDamage() + " damage. Choose an action");
+				} else {
+					text.setText("       Not enough mana!");
+				}
 			}
 			attack.setVisible(true);
 			item.setVisible(true);

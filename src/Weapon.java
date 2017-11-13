@@ -18,6 +18,9 @@ public class Weapon {
 		} else if (id==3) {
 			//Battle Hammer
 			strength = 5;
+		} else if (id==4) {
+			//Minotaur Axe
+			strength = 6;
 		}
 	}
 	

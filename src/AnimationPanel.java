@@ -29,6 +29,9 @@ public class AnimationPanel extends JPanel implements ActionListener
 	BufferedImage hpBarFull;
 	BufferedImage background;
 	BufferedImage startScreen;
+	BufferedImage goblin;
+	BufferedImage minotaur;
+	BufferedImage asgoroth;
 	boolean attack = false;
 	int warX = 275;
 	int warY = 325;
@@ -44,6 +47,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 	int monsterDamage;
 	boolean start = false;
 	int health = 0;
+	int battleIndex = 0;
 
 	public AnimationPanel()
 	{
@@ -64,6 +68,27 @@ public class AnimationPanel extends JPanel implements ActionListener
 
 		try {
 			orc = ImageIO.read(new File("orc.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			goblin = ImageIO.read(new File("goblin.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			minotaur = ImageIO.read(new File("minotaur.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			asgoroth = ImageIO.read(new File("asgoroth.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,7 +139,16 @@ public class AnimationPanel extends JPanel implements ActionListener
 		g.fillRect(0, 0, 1500, 600);
 		g.drawImage(background, 200, 40, this);
 		g.drawImage(warrior,warX,warY,this); //img link, upper left corner coor, this
-		g.drawImage(orc, 625, 25, this);
+		
+		if (battleIndex == 0) {
+			g.drawImage(orc, 625, 25, this);
+		} else if (battleIndex == 1) {
+			g.drawImage(goblin, 700, 160, this);
+		} else if (battleIndex == 2) {
+			g.drawImage(minotaur.getScaledInstance(minotaur.getWidth()/2, minotaur.getHeight()/2, Image.SCALE_FAST), 750, 220, this);
+		} else if (battleIndex == 3) {
+			g.drawImage(asgoroth.getScaledInstance(asgoroth.getWidth()/2, asgoroth.getHeight()/2, Image.SCALE_FAST), 750, 220, this);
+		}
 		g.drawImage(hpBar, 200, 200, this);
 		g.drawImage(hpBarFull.getSubimage(0, 0, hpBarFull.getWidth()-(22*health), hpBarFull.getHeight()), 200, 200, this);
 		if (!start) {
@@ -200,10 +234,14 @@ public class AnimationPanel extends JPanel implements ActionListener
 	}
 	
 	public void getHealth(int phealth) {
-		if (phealth == 0) {
+		if (phealth <= 0) {
 			health = (428/22);
 		} else {
 			health = (20-phealth);
 		}
+	}
+	
+	public void updateMonster() {
+		battleIndex++;
 	}
 }
